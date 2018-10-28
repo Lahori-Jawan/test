@@ -33,11 +33,32 @@ jobs:
 
       # run tests!
       - run: yarn test
+  build_image:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
+      # build the application image
+      - run: docker build -t lahori/demo:$(echo $CIRCLE_SHA1 | cut -c1-7) .
+
+      # deploy the image
+      - run: docker push lahori/demo:$(echo $CIRCLE_SHA1 | cut -c1-7)
 
 workflows:
   version: 2
   test-build-and-deploy:
     jobs:
       - test
-      # - build
+      - build_image:
+          filters:
+            branches:
+              only: master
+      # - deploy:
+      #     requires:
+      #       - test
+      #       - build_image
+      #     filters:
+      #       branches:
+      #         only: master
