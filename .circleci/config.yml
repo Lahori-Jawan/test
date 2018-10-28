@@ -2,10 +2,15 @@
 #
 version: 2
 jobs:
-  build:
+  test:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.12.0
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
 
     working_directory: ~/repo
 
@@ -13,9 +18,47 @@ jobs:
       - checkout
 
       # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
       - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: yarn test
+  build_image:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
+      # build the application image
+      - run: docker build -t lahori/demo:$(echo $CIRCLE_SHA1 | cut -c1-7) .
 
+      # deploy the image
+      - run: docker push lahori/demo:$(echo $CIRCLE_SHA1 | cut -c1-7)
+
+workflows:
+  version: 2
+  test-build-and-deploy:
+    jobs:
+      - test
+      - build_image:
+          filters:
+            branches:
+              only: master
+      # - deploy:
+      #     requires:
+      #       - test
+      #       - build_image
+      #     filters:
+      #       branches:
+      #         only: master
