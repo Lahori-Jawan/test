@@ -1,66 +1,45 @@
 <template>
-  <section class="container">
-    <div>
-      <logo/>
-      <h1 class="title">
-        circleci
-      </h1>
-      <h2 class="subtitle">
-        My grand Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
-    </div>
-  </section>
+  <div>
+    <h1 class="tag">Hello {{ name }}!</h1>
+    <p class="m-b-10"><span class="red">My Name:</span><b> {{fullname}}</b></p>
+    <p class="age m-b-10"><span class="red">Age:</span><strong> {{age}}</strong></p>
+    <p class="city m-b-10"><span class="red">My City:</span><strong> {{city}}</strong></p>
+    <p class="school m-b-10"><span class="red">School:</span><strong> {{school}}</strong></p>
+    <p class="red m-b-10 breakfast">My favourite breakfast:</p>
+    <brekfast :list="list"/>
+  </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
+import brekfast from '~/components/List.vue'
 export default {
-  components: {
-    Logo
+  components: {brekfast},
+  data () {
+    return {
+      name: 'world',
+      age: '10yr',
+      school:'St mary school',
+      city:'London',
+      fullname: "Henry Smith ",
+      list: ['Coffee', 'Hersheys', 'Snicker', 'bagel','Donuts','Pritzel']}
+  },
+  head () {
+    return {
+      title: 'Home'
+    }
   }
 }
 </script>
 
 <style>
-
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+.red {
+  color: red;
 }
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+.m-b-10{
+  margin-bottom:10px
 }
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+.tag{
+  color:coral;
+  margin-bottom:10px;
 }
 </style>
