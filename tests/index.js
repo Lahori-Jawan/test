@@ -1,3 +1,4 @@
+// Nuxt exaple: https://nuxtjs.org/guide/development-tools#end-to-end-testing
 import test from 'ava'
 import { Nuxt, Builder } from 'nuxt'
 import { resolve } from 'path'
