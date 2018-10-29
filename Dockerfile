@@ -4,8 +4,8 @@ ENV DIR /live
 
 WORKDIR ${DIR}
 
-COPY package*.json ${DIR}
-COPY yarn.lock ${DIR}
+COPY package*.json ${DIR}/
+COPY yarn.lock ${DIR}/
 
 RUN yarn install
 RUN yarn build
