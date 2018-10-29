@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  nuxt:
+    build: .
+    container_name: luv-website
+    # restart: always
+    ports:
+      - "3000:3000"
+    command:
+      "yarn dev"
+  # nginx:
+  #   image: nginx:1.13
+  #   container_name: luv-nginx
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx:/etc/nginx/conf.d
+  #   depends_on:
+  #     - nuxt
