@@ -4,14 +4,16 @@ ENV DIR /live
 
 WORKDIR ${DIR}
 
-COPY package*.json ${DIR}/
+COPY package.json ${DIR}
 # COPY yarn.lock ${DIR}/
 
 RUN yarn install
 RUN yarn build
 
-COPY . ./
+COPY . .
 
 EXPOSE 3000
+
+CMD ["yarn", "dev"]
 
 ENV HOST 0.0.0.0
