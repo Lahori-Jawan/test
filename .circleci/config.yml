@@ -1,8 +1,6 @@
 # Javascript Node CircleCI 2.0 configuration file
 # Since every run step is a new shell, environment variables are not shared across steps. If you need an environment variable to be accessible in more than one step, export the value using BASH_ENV.
 
-# CIRCLE_PREVIOUS_BUILD_NUM
-
 version: 2
 jobs:
   test:
@@ -28,8 +26,6 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
-
-      - run : git show HEAD^1
 
       - save_cache:
           paths:
