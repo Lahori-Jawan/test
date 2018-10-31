@@ -1,5 +1,8 @@
 # Javascript Node CircleCI 2.0 configuration file
-#
+# Since every run step is a new shell, environment variables are not shared across steps. If you need an environment variable to be accessible in more than one step, export the value using BASH_ENV.
+
+# CIRCLE_PREVIOUS_BUILD_NUM
+
 version: 2
 jobs:
   test:
@@ -26,6 +29,8 @@ jobs:
 
       - run: yarn install
 
+      - run : echo $CIRCLE_PREVIOUS_BUILD_NUM
+
       - save_cache:
           paths:
             - node_modules
@@ -45,6 +50,12 @@ jobs:
 
       # deploy the image
       - run: docker push 842750118asf7987/demo:$(echo $CIRCLE_SHA1 | cut -c1-7)
+
+
+  # - run:
+  #         name: Deploy app to Digital Ocean Server via Docker
+  #         command: |
+  #           ssh -o StrictHostKeyChecking=no root@hello.dpunks.org "/bin/bash ./deploy_app.sh ariv3ra/$IMAGE_NAME:$TAG"
 
 workflows:
   version: 2
