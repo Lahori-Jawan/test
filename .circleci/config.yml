@@ -9,8 +9,6 @@ jobs:
     steps:
       - run:
           command: |
-            echo 'export OWNER=842750118asf7987' >> $BASH_ENV
-            echo 'export IMAGE_NAME=demo' >> $BASH_ENV
             echo 'export TAG=${$CIRCLE_SHA1 | cut -c1-7}' >> $BASH_ENV
   test:
     docker:
@@ -51,11 +49,11 @@ jobs:
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       # build the application image
-      - run: docker build -t 842750118asf7987/${IMAGE_NAME}:${TAG} .
+      - run: docker build -t $DOCKER_USER/$IMAGE_NAME:$TAG .
       # - run: docker build -t $(echo $OWNER/$IMAGE_NAME:$TAG) .
 
       # deploy the image
-      - run: docker push 842750118asf7987/${IMAGE_NAME}:${TAG}
+      - run: docker push $DOCKER_USER/$IMAGE_NAME:$TAG
       # - run: docker push $(echo $OWNER/$IMAGE_NAME:$TAG)
   deploy:
     docker:
