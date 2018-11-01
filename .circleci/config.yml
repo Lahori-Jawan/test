@@ -53,15 +53,15 @@ workflows:
   version: 2
   test-build-and-deploy:
     jobs:
-      - test
-      - build_image:
-          filters:
-            branches:
-              only: master
+      # - test
+      - build_image
+          # filters:
+          #   branches:
+          #     only: master
       - deploy:
           requires:
-            - test
+            # - test
             - build_image
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
