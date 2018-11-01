@@ -51,11 +51,11 @@ jobs:
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       # build the application image
-      - run: docker build -t 842750118asf7987/$IMAGE_NAME:$TAG .
+      - run: docker build -t 842750118asf7987/${IMAGE_NAME}:${TAG} .
       # - run: docker build -t $(echo $OWNER/$IMAGE_NAME:$TAG) .
 
       # deploy the image
-      - run: docker push 842750118asf7987/$IMAGE_NAME:$TAG
+      - run: docker push 842750118asf7987/${IMAGE_NAME}:${TAG}
       # - run: docker push $(echo $OWNER/$IMAGE_NAME:$TAG)
   deploy:
     docker:
@@ -73,17 +73,17 @@ workflows:
   test-build-and-deploy:
     jobs:
       - set_variables
-      - test
+      # - test
       - build_image:
           requires:
             - set_variables
           # filters:
           #   branches:
           #     only: master
-      - deploy:
-          requires:
-            - test
-            - build_image
+      # - deploy:
+      #     requires:
+      #       - test
+      #       - build_image
           # filters:
           #   branches:
           #     only: master
