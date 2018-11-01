@@ -54,7 +54,8 @@ jobs:
       - run: docker build -t 842750118asf7987/demo:$(echo $CIRCLE_SHA1 | cut -c1-7) .
 
       # deploy the image
-      - run: docker push 842750118asf7987/demo:$(echo $CIRCLE_SHA1 | cut -c1-7)
+      # - run: docker push 842750118asf7987/demo:$(echo $CIRCLE_SHA1 | cut -c1-7)
+      - run: docker push $(echo $OWNER/$IMAGE_NAME:$TAG)
   deploy:
     docker:
       - image: circleci/node:8.12.0
