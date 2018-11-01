@@ -9,7 +9,9 @@ jobs:
     steps:
       - run:
           command: |
-            echo 'export TAG=${$CIRCLE_SHA1 | cut -c1-7}' >> $BASH_ENV
+            # echo 'export TAG=${$CIRCLE_SHA1 | cut -c1-7}' >> $BASH_ENV
+    environment:
+      TAG: $(echo CIRCLE_SHA1 | cut -c1-7)
   test:
     docker:
       # specify the version you desire here
