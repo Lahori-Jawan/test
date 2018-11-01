@@ -45,17 +45,17 @@ jobs:
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       # build the application image
-      - run: docker build -t $DOCKER_USER/$IMAGE_NAME:${$CIRCLE_SHA1 | cut -c1-7} .
+      - run: docker build -t $DOCKER_USER/$IMAGE_NAME:$(echo $CIRCLE_SHA1 | cut -c1-7) .
       # - run: docker build -t $(echo $OWNER/$IMAGE_NAME:$TAG) .
 
       # deploy the image
-      - run: docker push $DOCKER_USER/$IMAGE_NAME:${$CIRCLE_SHA1 | cut -c1-7}
+      - run: docker push $DOCKER_USER/$IMAGE_NAME:$(echo $CIRCLE_SHA1 | cut -c1-7)
       # - run: docker push $(echo $OWNER/$IMAGE_NAME:$TAG)
   deploy:
     docker:
       - image: circleci/node:8.12.0
     steps:
-      - run: ssh -o StrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "./deploy_docker.sh $IMAGE_NAME ${$CIRCLE_SHA1 | cut -c1-7}"
+      - run: ssh -o StrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "./deploy_docker.sh $IMAGE_NAME $(echo $CIRCLE_SHA1 | cut -c1-7)"
 
   # - run:
   #         name: Deploy app to Digital Ocean Server via Docker
