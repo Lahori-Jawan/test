@@ -69,11 +69,8 @@ workflows:
   version: 2
   test-build-and-deploy:
     jobs:
-      - set_variables
       # - test
-      - build_image:
-          requires:
-            - set_variables
+      - build_image
           # filters:
           #   branches:
           #     only: master
