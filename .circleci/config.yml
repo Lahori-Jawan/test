@@ -3,23 +3,10 @@
 
 version: 2
 jobs:
-  set_variables:
-    docker:
-      - image: circleci/node:8.12.0
-    steps:
-      - run:
-          command: |
-            echo 'export TAG=${$CIRCLE_SHA1 | cut -c1-7}' >> $BASH_ENV
-            echo 'export IMAGE_NAME=842750118asf7987/demo' >> $BASH_ENV
   test:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.12.0
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
 
     working_directory: ~/repo
 
@@ -50,22 +37,22 @@ jobs:
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       # build the application image
-      - run: docker build -t ${IMAGE_NAME}:${TAG} .
+      - run: docker build -t $DOCKER_USER/$IMAGE_NAME:$(echo $CIRCLE_SHA1 | cut -c1-7) .
+      # - run: docker build -t $DOCKER_USER/$IMAGE_NAME:$TAG .
 
       # deploy the image
-      - run: docker push ${IMAGE_NAME}:${TAG}
+      - run: docker push $DOCKER_USER/$IMAGE_NAME:$(echo $CIRCLE_SHA1 | cut -c1-7)
+      # - run: docker push $DOCKER_USER/$IMAGE_NAME:$TAG
   deploy:
     docker:
       - image: circleci/node:8.12.0
     steps:
-      - run: ssh -o StrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "./deploy_docker.sh $DOCKER_USER/$IMAGE_NAME $TAG"
-
+      - run: ssh -o StrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "./deploy_docker.sh $DOCKER_USER/$IMAGE_NAME $(echo $CIRCLE_SHA1 | cut -c1-7)"
 
 workflows:
   version: 2
   test-build-and-deploy:
     jobs:
-      - set_variables
       - test
       - build_image
           # filters:
