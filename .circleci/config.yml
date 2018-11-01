@@ -3,15 +3,6 @@
 
 version: 2
 jobs:
-  set_variables:
-    docker:
-      - image: circleci/node:8.12.0
-    steps:
-      - run:
-          command: |
-            # echo 'export TAG=${$CIRCLE_SHA1 | cut -c1-7}' >> $BASH_ENV
-    environment:
-      TAG: $(echo CIRCLE_SHA1 | cut -c1-7)
   test:
     docker:
       # specify the version you desire here
@@ -47,6 +38,9 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run:
+          command: |
+            echo 'export TAG=${$CIRCLE_SHA1 | cut -c1-7}' >> $BASH_ENV
       - run: |
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
@@ -61,6 +55,9 @@ jobs:
     docker:
       - image: circleci/node:8.12.0
     steps:
+      - run:
+          command: |
+            echo 'export TAG=${$CIRCLE_SHA1 | cut -c1-7}' >> $BASH_ENV
       - run: ssh -o StrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "./deploy_docker.sh $IMAGE_NAME $TAG"
 
   # - run:
