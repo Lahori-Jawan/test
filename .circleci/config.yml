@@ -37,7 +37,7 @@ jobs:
   build_image:
     machine: true
     environment:
-      TAG: $(echo $CIRCLE_SHA1 | cut -c1-7)
+      TAG: "{$CIRCLE_SHA1 | cut -c1-7}"
     steps:
       - checkout
       - run: |
