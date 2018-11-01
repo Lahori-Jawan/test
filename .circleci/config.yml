@@ -9,8 +9,9 @@ jobs:
     steps:
       - run:
           command: |
+            echo 'export OWNER=842750118asf7987' >> $BASH_ENV
+            echo 'export IMAGE_NAME=demo' >> $BASH_ENV
             echo 'export TAG=${$CIRCLE_SHA1 | cut -c1-7}' >> $BASH_ENV
-            echo 'export IMAGE_NAME=842750118asf7987/demo' >> $BASH_ENV
   test:
     docker:
       # specify the version you desire here
@@ -50,10 +51,10 @@ jobs:
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       # build the application image
-      - run: docker build -t $IMAGE_NAME:$TAG .
+      - run: docker build -t $OWNER/$IMAGE_NAME:$TAG .
 
       # deploy the image
-      - run: docker push $IMAGE_NAME:$TAG
+      - run: docker push $OWNER/$IMAGE_NAME:$TAG
   deploy:
     docker:
       - image: circleci/node:8.12.0
@@ -71,14 +72,14 @@ workflows:
     jobs:
       - set_variables
       - test
-      - build_image:
-          filters:
-            branches:
-              only: master
+      - build_image
+          # filters:
+          #   branches:
+          #     only: master
       - deploy:
           requires:
             - test
             - build_image
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
