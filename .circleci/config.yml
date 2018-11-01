@@ -51,7 +51,8 @@ jobs:
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       # build the application image
-      - run: docker build -t 842750118asf7987/demo:$(echo $CIRCLE_SHA1 | cut -c1-7) .
+      # - run: docker build -t 842750118asf7987/demo:$(echo $CIRCLE_SHA1 | cut -c1-7) .
+      - run: docker build -t $(echo $OWNER/$IMAGE_NAME:$TAG) .
 
       # deploy the image
       # - run: docker push 842750118asf7987/demo:$(echo $CIRCLE_SHA1 | cut -c1-7)
