@@ -36,10 +36,9 @@ jobs:
       - run: yarn test
   build_image:
     machine: true
-    environment:
-      TAG: "{$CIRCLE_SHA1 | cut -c1-7}"
     steps:
       - checkout
+      - run: echo 'export TAG={$CIRCLE_SHA1 | cut -c1-7}' >> $BASH_ENV
       - run: |
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
