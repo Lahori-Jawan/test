@@ -55,7 +55,7 @@ jobs:
       # - run: docker build -t $(echo $OWNER/$IMAGE_NAME:$TAG) .
 
       # deploy the image
-      - run: docker push 842750118asf7987/$IMAGE_NAME:$TAG
+      - run: docker push 842750118asf7987/$(echo $IMAGE_NAME):$(echo $TAG)
       # - run: docker push $(echo $OWNER/$IMAGE_NAME:$TAG)
   deploy:
     docker:
