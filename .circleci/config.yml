@@ -8,11 +8,6 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:8.12.0
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
 
     steps:
@@ -54,24 +49,19 @@ jobs:
     steps:
       - run: ssh -o StrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "./deploy_docker.sh $IMAGE_NAME $(echo $CIRCLE_SHA1 | cut -c1-7)"
 
-  # - run:
-  #         name: Deploy app to Digital Ocean Server via Docker
-  #         command: |
-  #           ssh -o StrictHostKeyChecking=no root@hello.dpunks.org "/bin/bash ./deploy_app.sh ariv3ra/$IMAGE_NAME:$TAG"
-
 workflows:
   version: 2
   test-build-and-deploy:
     jobs:
-      # - test
-      - build_image
-          # filters:
-          #   branches:
-          #     only: master
-      # - deploy:
-      #     requires:
-      #       - test
-      #       - build_image
-          # filters:
-          #   branches:
-          #     only: master
+      - test
+      - build_image:
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - test
+            - build_image
+          filters:
+            branches:
+              only: master
