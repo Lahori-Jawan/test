@@ -58,12 +58,8 @@ jobs:
     docker:
       - image: circleci/node:8.12.0
     steps:
-      - run: ssh -o StrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "./deploy_docker.sh $IMAGE_NAME $TAG"
+      - run: ssh -o StrictHostKeyChecking=no -v $DROPLET_USER@$DROPLET_IP "./deploy_docker.sh $DOCKER_USER/$IMAGE_NAME $TAG"
 
-  # - run:
-  #         name: Deploy app to Digital Ocean Server via Docker
-  #         command: |
-  #           ssh -o StrictHostKeyChecking=no root@hello.dpunks.org "/bin/bash ./deploy_app.sh ariv3ra/$IMAGE_NAME:$TAG"
 
 workflows:
   version: 2
@@ -71,14 +67,14 @@ workflows:
     jobs:
       - set_variables
       - test
-      - build_image:
-          filters:
-            branches:
-              only: master
+      - build_image
+          # filters:
+          #   branches:
+          #     only: master
       - deploy:
           requires:
             - test
             - build_image
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
