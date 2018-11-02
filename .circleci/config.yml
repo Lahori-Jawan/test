@@ -54,14 +54,14 @@ workflows:
   test-build-and-deploy:
     jobs:
       - test
-      - build_image
-          # filters:
-          #   branches:
-          #     only: master
+      - build_image:
+          filters:
+            branches:
+              only: master
       - deploy:
           requires:
             - test
             - build_image
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
